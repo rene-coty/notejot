@@ -112,7 +112,7 @@ namespace Notejot {
 
             // Preparing window to be shown
             var settings = new Settings ();
-            set_default_size(
+            set_default_size (
                 settings.window_w,
                 settings.window_h
             );
@@ -150,12 +150,14 @@ namespace Notejot {
 
             // Needed to ensure colors in places
             var style_manager = new StyleManager ();
-            style_manager.set_css ("");
+            style_manager.set_css ();
 
             this.set_size_request (360, 360);
             this.show ();
             this.mw = (MainWindow) app.get_active_window ();
             this.album = albumt;
+
+            menu_button.get_popover ().has_arrow = false;
         }
 
         protected override bool close_request () {
@@ -279,7 +281,7 @@ namespace Notejot {
                 {translators},
                 {"Paulo \"Lains\" Galardi"},
                 2017, // Year of first publication.
-                He.AboutWindow.Licenses.GPLv3,
+                He.AboutWindow.Licenses.GPLV3,
                 He.Colors.YELLOW
             );
             about.present ();

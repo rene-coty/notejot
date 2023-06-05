@@ -38,7 +38,7 @@ public class Notejot.NoteContentView : He.Bin {
     [GtkChild]
     unowned He.BottomBar note_footer;
     [GtkChild]
-    unowned Gtk.Entry note_title;
+    unowned He.TextField note_title;
     [GtkChild]
     public unowned Gtk.TextView note_textbox;
     [GtkChild]
@@ -197,6 +197,7 @@ public class Notejot.NoteContentView : He.Bin {
 
             pop = (Gtk.PopoverMenu)s_menu.get_popover ();
             pop.add_child (nmp, "theme");
+            pop.has_arrow = false;
 
             note_text.changed.connect (() => {
                 Timeout.add(60, () => {
@@ -276,8 +277,8 @@ public class Notejot.NoteContentView : He.Bin {
                     note_header.add_css_class ("notejot-header");
                 }
 
-                note_footer.add_css_class ("notejot-footer");
-                note_footer.remove_css_class ("bottom-bar");
+                note_textbox.add_css_class ("text-view");
+                note_textbox.add_css_class ("notejot-textview");
             }
         }
     }

@@ -3,6 +3,10 @@
   outline: 1px solid @borders;
 }
 
+.search {
+  border-radius: 999px;
+}
+
 .circular radio {
   background: none;
   padding: 12px;
@@ -24,7 +28,8 @@
   background: none;
 }
 
-.notejot-note headerbar {
+.notejot-note headerbar,
+.notejot-note entry {
   box-shadow: none;
   border: none;
   background: none;
@@ -132,6 +137,6 @@
   font-size: 0.9rem;
 }
 
-.nb * {
+button.flat:not(:hover):not(:active) {
   background: none;
 }

@@ -52,7 +52,7 @@
                       <object class="GtkOverlay">
                         <child>
                           <object class="NotejotNotePicture" id="image">
-                            <property name="height-request">160</property>
+                            <property name="height-request">190</property>
                             <property name="width-request">450</property>
                           </object>
                         </child>
@@ -66,14 +66,10 @@
                               <object class="HeAppBar" id="titlebar">
                                 <property name="scroller">sw</property>
                                 <property name="viewtitle-widget">
-                                  <object class="GtkEntry" id="note_title">
+                                  <object class="HeTextField" id="note_title">
                                     <property name="hexpand">1</property>
                                     <property name="halign">start</property>
-                                    <property name="tooltip-text" translatable="yes">Edit note name</property>
-                                    <style>
-                                      <class name="view-title" />
-                                      <class name="flat" />
-                                    </style>
+                                    <property name="tooltip-text" translatable="yes">Note Name</property>
                                   </object>
                                 </property>
                                 <child>
@@ -164,9 +160,6 @@
                                 </property>
                               </object>
                             </property>
-                            <style>
-                              <class name="notejot-view"/>
-                            </style>
                           </object>
                         </child>
                       </object>
@@ -179,9 +172,6 @@
                     <property name="transition-type">crossfade</property>
                     <child>
                       <object class="HeBottomBar" id="note_footer">
-                        <style>
-                          <class name="notejot-footer"/>
-                        </style>
                         <property name="hexpand">1</property>
                         <child type="left">
                           <object class="HeIconicButton" id="bold_button">
