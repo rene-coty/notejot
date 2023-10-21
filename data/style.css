@@ -1,12 +1,3 @@
-.solid-csd {
-  box-shadow: none;
-  outline: 1px solid @borders;
-}
-
-.search {
-  border-radius: 999px;
-}
-
 .circular radio {
   background: none;
   padding: 12px;
@@ -15,128 +6,146 @@
   border-radius: 999px;
   border-color: alpha(@window_fg_color, 0.3);
 }
-
 .circular radio:hover {
   border-color: alpha(@window_fg_color, 0.6);
 }
-
 .circular radio:checked {
   border-color: alpha(@window_fg_color, 0.3);
 }
 
-.outline {
+.notejot-theme .textual-button {
+  border-radius: 0;
   background: none;
+  color: @view_fg_color;
+  box-shadow: none;
+}
+.notejot-theme .textual-button:hover {
+  background: alpha(@window_fg_color, 0.05);
+  color: @view_fg_color;
+}
+.notejot-theme .textual-button:active {
+  background: alpha(@window_fg_color, 0.08);
+  color: @view_fg_color;
 }
 
-.notejot-note headerbar,
-.notejot-note entry {
-  box-shadow: none;
-  border: none;
-  background: none;
+.notejot-textview text {
+  background: url("resource://io/github/lainsce/Notejot/texture.png"), alpha(@surface_container_bg_color, 0.38);
+  text-shadow: 0 1px 2px black;
 }
 
 .scrim {
-  background-image: linear-gradient(180deg,
-      alpha(#2d2d2d, 0.12),
-      alpha(#2d2d2d, 0.1),
-      alpha(#2d2d2d, 0.07),
-      alpha(#2d2d2d, 0.05),
-      alpha(#2d2d2d, 0.02),
-      alpha(#2d2d2d, 0),
-      alpha(#2d2d2d, 0.02),
-      alpha(#2d2d2d, 0.05),
-      alpha(#2d2d2d, 0.07),
-      alpha(#2d2d2d, 0.1),
-      alpha(#2d2d2d, 0.12),
-      alpha(#2d2d2d, 0.15),
-      alpha(#2d2d2d, 0.17),
-      alpha(#2d2d2d, 0.2),
-      alpha(#2d2d2d, 0.22),
-      alpha(#2d2d2d, 0.25),
-      alpha(#2d2d2d, 0.27));
-  color: #fafafa;
+  color: white;
   padding: 0;
   margin: 0;
 }
-.scrim headerbar,
-.scrim .disclosure-button {
-  color: #fafafa;
-}
-.scrim box > label,
-.scrim > label,
-.scrim entry text,
-.scrim widget > label {
-  color: #fafafa;
-  text-shadow: 0 1px 2px #2d2d2d;
-}
-.scrim image {
-  color: #fafafa;
-  -gtk-icon-shadow: 0 1px 2px #2d2d2d;
+.scrim .view-subtitle {
+  color: white;
+  text-shadow: 0 1px 2px black;
 }
 .scrim .close image,
 .scrim .maximize image,
-.scrim .image-text-button,
-.scrim .disclosure-button {
-  color: #fafafa;
-  box-shadow: 0 1px 2px #2d2d2d;
+.scrim .minimize image {
+  color: white;
+  -gtk-icon-shadow: 0 1px 2px black;
+  box-shadow: 0 1px 2px black;
 }
-
-.notejot-searchbar {
-  border-radius: 999px;
+.scrim .disclosure-button {
+  box-shadow: 0 1px 2px black;
+}
+.scrim .text-field {
+  box-shadow: 0 0 0 1px alpha(white, 0.38);
+  background: alpha(white, 0.08);
+}
+.scrim .text-field * {
+  opacity: 1;
+  color: white;
+  text-shadow: 0 1px 2px black;
+  caret-color: @view_bg_color;
 }
 
 .color-red radio {
-  background: #db898e;
-  color: #db898e;
+  background: alpha(@meson_red, 0.65);
+  color: alpha(@meson_red, 0);
 }
-
 .color-orange radio {
-  background: #eeab7a;
-  color: #eeab7a;
+  background: alpha(@lepton_orange, 0.65);
+  color: alpha(@lepton_orange, 0);
 }
-
 .color-yellow radio {
-  background: #f6dc83;
-  color: #f6dc83;
+  background: alpha(@electron_yellow, 0.65);
+  color: alpha(@electron_yellow, 0);
 }
-
 .color-green radio {
-  background: #92dcb9;
-  color: #92dcb9;
+  background: alpha(@muon_green, 0.65);
+  color: alpha(@muon_green, 0);
 }
-
 .color-blue radio {
-  background: #89b3e6;
-  color: #89b3e6;
+  background: alpha(@proton_blue, 0.65);
+  color: alpha(@proton_blue, 0);
 }
-
 .color-purple radio {
-  background: #bc99c8;
-  color: #bc99c8;
+  background: alpha(@tau_purple, 0.65);
+  color: alpha(@tau_purple, 0);
 }
-
-.color-brown radio {
-  background: #beaa98;
-  color: #beaa98;
-}
-
 .color-reset radio {
-  background: @view_bg_color;
-  color: @view_bg_color;
+  background: alpha(@surface_bg_color, 0.65);
+  color: alpha(@surface_bg_color, 0);
 }
 
 .big-font {
-  font-size: 1.4rem;
+  font-size: 20px;
 }
-
 .med-font {
-  font-size: 1.1rem;
+  font-size: 16px;
 }
-
 .sml-font {
-  font-size: 0.9rem;
+  font-size: 12px;
 }
 
-button.flat:not(:hover):not(:active) {
+.rounded-pic {
+  margin: 0;
+  padding: 0;
+  border-radius: 8px;
+}
+.unrounded-pic {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* MainSideBar, upstream when done */
+.sidebar2-view {
+  background: @surface_container_high_bg_color;
+  box-shadow: inset -1px 0 0 0 alpha(@outline, 0.38),
+	            inset -1px 0 0 0 alpha(@window_bg_color, 0.15);
+}
+.sidebar2-view .disclosure-button {
+  background: alpha(@window_fg_color, 0.08);
+}
+.sidebar2-view .disclosure-button:hover {
+  background: @accent_color;
+}
+.sidebar2-view .disclosure-button:active {
+  background: @accent_color;
+}
+.sidebar2-view .disclosure-button > .toggle {
   background: none;
+}
+.sidebar2-view .mini-content-block:hover {
+  background: alpha(@window_fg_color, 0.08);
+}
+.sidebar2-view .mini-content-block:active {
+  background: alpha(@window_fg_color, 0.08);
+}
+.sidebar2-view .navigation-rail-button:hover {
+  box-shadow: none;
+  background: alpha(@window_fg_color, 0.08);
+}
+.sidebar2-view .navigation-rail-button:checked {
+  box-shadow: none;
+  background: alpha(@window_fg_color, 0.08);
+}
+.sidebar2-view .navigation-rail-button:hover:checked {
+  box-shadow: none;
+  background: alpha(@window_fg_color, 0.08);
 }

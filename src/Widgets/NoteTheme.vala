@@ -20,13 +20,11 @@ namespace Notejot {
     [GtkTemplate (ui = "/io/github/lainsce/Notejot/note_theme.ui")]
     public class Widgets.NoteTheme : Gtk.Box {
         [GtkChild]
-        public unowned Gtk.Button note_pin_button;
+        public unowned He.TextButton note_pin_button;
         [GtkChild]
-        public unowned Gtk.Button export_button;
+        public unowned He.TextButton export_button;
         [GtkChild]
         public unowned Gtk.CheckButton color_button_red;
-        [GtkChild]
-        public unowned Gtk.CheckButton color_button_orange;
         [GtkChild]
         public unowned Gtk.CheckButton color_button_yellow;
         [GtkChild]
@@ -35,8 +33,6 @@ namespace Notejot {
         public unowned Gtk.CheckButton color_button_blue;
         [GtkChild]
         public unowned Gtk.CheckButton color_button_purple;
-        [GtkChild]
-        public unowned Gtk.CheckButton color_button_brown;
         [GtkChild]
         public unowned Gtk.CheckButton color_button_reset;
     }

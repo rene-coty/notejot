@@ -18,39 +18,33 @@
 */
 [GtkTemplate (ui = "/io/github/lainsce/Notejot/notelistview.ui")]
 public class Notejot.NoteListView : He.Bin {
+    [GtkChild]
+    public unowned Gtk.ListView lv;
+    [GtkChild]
+    public unowned Gtk.SingleSelection ss;
+
     public ObservableList<Note>? notes { get; set; }
-    public Gtk.SingleSelection? ss {get; construct;}
-
-    Note? _selected_note;
-    public Note? selected_note {
-        get { return _selected_note; }
-        set {
-            if (value == _selected_note)
-                return;
-
-            if (value != null)
-                _selected_note = value;
-        }
-    }
+    public Note? selected_note { get; set; }
+    public NotebookMainListView? nblistview { get; set; }
+    public He.TextField? note_search { get; set; }
     public NoteViewModel? view_model { get; set; }
+    public NotebookViewModel? nbview_model { get; set; }
     public Bis.Album album { get; construct; }
 
     public NoteListView () {
         Object (
-            ss: ss,
             album: album
         );
     }
 
     construct {
-        ss.bind_property ("selected", this, "selected-note", DEFAULT, (_, from, ref to) => {
-            var pos = (uint) from;
-
-            if (pos != Gtk.INVALID_LIST_POSITION)
-                to.set_object (ss.model.get_item (pos));
-                album.set_visible_child (((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>(this)).grid);
-
-            return true;
+        lv.activate.connect ((pos) => {
+            if ((lv.get_model ().get_item (pos) as Note) != selected_note) {
+                selected_note = lv.get_model ().get_item (pos) as Note;
+            } else {
+                ss.unselect_all ();
+            }
+            album.set_visible_child (((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>(this)).grid);
         });
     }
 

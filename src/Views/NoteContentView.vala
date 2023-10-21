@@ -34,7 +34,7 @@ public class Notejot.NoteContentView : He.Bin {
     [GtkChild]
     unowned Gtk.Box note_header;
     [GtkChild]
-    unowned Gtk.Box note_body;
+    public unowned Gtk.Box note_body;
     [GtkChild]
     unowned He.BottomBar note_footer;
     [GtkChild]
@@ -60,7 +60,7 @@ public class Notejot.NoteContentView : He.Bin {
     [GtkChild]
     unowned Gtk.Button image_remove_button;
     [GtkChild]
-    unowned Notejot.NotePicture image;
+    unowned He.ContentBlockImage image;
     [GtkChild]
     unowned Gtk.Button delete_button;
     [GtkChild]
@@ -102,10 +102,6 @@ public class Notejot.NoteContentView : He.Bin {
             _note = value;
 
             fmt_syntax_start ();
-            main_box.get_style_context().add_provider(provider, 1);
-            note_header.get_style_context().add_provider(provider, 2);
-            note_footer.get_style_context().add_provider(provider, 3);
-            note_body.get_style_context().add_provider(provider, 4);
 
             format_revealer.reveal_child = _note != null ? true : false;
             s_menu.visible = _note != null ? true : false;
@@ -127,50 +123,41 @@ public class Notejot.NoteContentView : He.Bin {
 
             nmp.color_button_red.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #a51d2d;");
-                    vm.update_note_color (_note, "#a51d2d");
-                }
-            });
-
-            nmp.color_button_orange.toggled.connect (() => {
-                if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #c64600;");
-                    vm.update_note_color (_note, "#c64600");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @meson_red;");
+                    vm.update_note_color (_note, "red");
+                    vm.update_note (_note);
                 }
             });
 
             nmp.color_button_yellow.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #e5a50a;");
-                    vm.update_note_color (_note, "#e5a50a");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @electron_yellow;");
+                    vm.update_note_color (_note, "yellow");
+                    vm.update_note (_note);
                 }
             });
 
             nmp.color_button_green.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #26a269;");
-                    vm.update_note_color (_note, "#26a269");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @muon_green;");
+                    vm.update_note_color (_note, "green");
+                    vm.update_note (_note);
                 }
             });
 
             nmp.color_button_blue.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #1a5fb4;");
-                    vm.update_note_color (_note, "#1a5fb4");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @proton_blue;");
+                    vm.update_note_color (_note, "blue");
+                    vm.update_note (_note);
                 }
             });
 
             nmp.color_button_purple.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #613583;");
-                    vm.update_note_color (_note, "#613583");
-                }
-            });
-
-            nmp.color_button_brown.toggled.connect (() => {
-                if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #63452c;");
-                    vm.update_note_color (_note, "#63452c");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @tau_purple;");
+                    vm.update_note_color (_note, "purple");
+                    vm.update_note (_note);
                 }
             });
 
@@ -190,8 +177,9 @@ public class Notejot.NoteContentView : He.Bin {
 
             nmp.color_button_reset.toggled.connect (() => {
                 if (_note != null) {
-                    provider.load_from_data ((uint8[]) "@define-color note_color #797775;");
-                    vm.update_note_color (_note, "#797775");
+                    provider.load_from_data ((uint8[]) "@define-color note_color @surface_bg_color;");
+                    vm.update_note_color (_note, "");
+                    vm.update_note (_note);
                 }
             });
 
@@ -207,10 +195,11 @@ public class Notejot.NoteContentView : He.Bin {
                 });
             });
 
-            title_binding = _note?.bind_property ("title", note_title, "text", SYNC_CREATE|BIDIRECTIONAL);
-            subtitle_binding = _note?.bind_property ("subtitle", titlebar, "viewsubtitle-label", SYNC_CREATE|BIDIRECTIONAL);
-            text_binding = _note?.bind_property ("text", note_text, "text", SYNC_CREATE|BIDIRECTIONAL);
-            pix_binding = _note?.bind_property ("picture", image, "file", SYNC_CREATE|BIDIRECTIONAL);
+            title_binding = _note?.bind_property ("title", note_title.get_entry (), "text", SYNC_CREATE | BIDIRECTIONAL);
+            subtitle_binding = _note?.bind_property ("subtitle", titlebar, "viewsubtitle-label", 
+                                                     SYNC_CREATE | BIDIRECTIONAL);
+            text_binding = _note?.bind_property ("text", note_text, "text", SYNC_CREATE | BIDIRECTIONAL);
+            pix_binding = _note?.bind_property ("picture", image, "file", SYNC_CREATE | BIDIRECTIONAL);
 
             image_button.visible = image.file != "" ? false : true;
             image_remove_button.visible = image.file == "" ? false : true;
@@ -255,10 +244,85 @@ public class Notejot.NoteContentView : He.Bin {
                 }
             });
 
-            provider.load_from_data ((uint8[]) "@define-color note_color %s;".printf(_note.color));
-            vm.update_note_color (_note, _note.color);
+            if (_note.color == "#ffffff00" || _note.color == "#797775" || _note.color == "#63452c" || _note.color == "#c64600") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @surface_bg_color;");
+                vm.update_note_color (_note, "");
+            }
+
+            // Move note colors to semantic names instead of rando hexcodes
+            if (_note.color == "#a51d2d") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @meson_red;");
+                vm.update_note_color (_note, "red");
+                vm.update_note (_note);
+            } else if (_note.color == "#e5a50a") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @electron_yellow;");
+                vm.update_note_color (_note, "yellow");
+                vm.update_note (_note);
+            } else if (_note.color == "#26a269") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @muon_green;");
+                vm.update_note_color (_note, "green");
+                vm.update_note (_note);
+            } else if (_note.color == "#1a5fb4") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @proton_blue;");
+                vm.update_note_color (_note, "blue");
+                vm.update_note (_note);
+            } else if (_note.color == "#613583") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @tau_purple;");
+                vm.update_note_color (_note, "purple");
+                vm.update_note (_note);
+            }
+
+            if (_note.color == "") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @surface_bg_color;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+                note_body.get_style_context().add_provider(provider, 4);
+            } else if (_note.color == "red") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @meson_red;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+                note_body.get_style_context().add_provider(provider, 4);
+            } else if (_note.color == "yellow") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @electron_yellow;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+                note_body.get_style_context().add_provider(provider, 4);
+            } else if (_note.color == "green") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @muon_green;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+                note_body.get_style_context().add_provider(provider, 4);
+            } else if (_note.color == "blue") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @proton_blue;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+            } else if (_note.color == "purple") {
+                provider.load_from_data ((uint8[]) "@define-color note_color @tau_purple;");
+                ((MainWindow)MiscUtils.find_ancestor_of_type<MainWindow>
+                    (this)).view_model.update_note_color (_note, _note.color);
+                main_box.get_style_context().add_provider(provider, 1);
+                note_header.get_style_context().add_provider(provider, 2);
+                note_footer.get_style_context().add_provider(provider, 3);
+                note_body.get_style_context().add_provider(provider, 4);
+            }
 
             note_textbox.grab_focus ();
+            note_textbox.remove_css_class ("view");
 
             // ListView Back Button
             bb_binding = ((Bis.Album)MiscUtils.find_ancestor_of_type<Bis.Album>(this)).bind_property ("folded", titlebar, "show-back", SYNC_CREATE);
@@ -270,15 +334,14 @@ public class Notejot.NoteContentView : He.Bin {
             if (_note != null) {
                 _note.notify.connect (on_text_updated);
                 if (image.file != "") {
+                    image.file = _note.picture;
                     note_header.add_css_class ("scrim");
                     note_header.remove_css_class ("notejot-header");
                 } else {
+                    image.file = "";
                     note_header.remove_css_class ("scrim");
                     note_header.add_css_class ("notejot-header");
                 }
-
-                note_textbox.add_css_class ("text-view");
-                note_textbox.add_css_class ("notejot-textview");
             }
         }
     }
@@ -291,11 +354,6 @@ public class Notejot.NoteContentView : He.Bin {
 
     construct {
         fmt_syntax_start ();
-        main_box.get_style_context().add_provider(provider, 1);
-        note_header.get_style_context().add_provider(provider, 2);
-        note_footer.get_style_context().add_provider(provider, 3);
-        note_body.get_style_context().add_provider(provider, 4);
-        note_textbox.remove_css_class ("view");
         empty.action_button.visible = false;
 
         notebook_button.clicked.connect (() => {
@@ -329,7 +387,7 @@ public class Notejot.NoteContentView : He.Bin {
         var file = yield MiscUtils.display_open_dialog (((MainWindow) MiscUtils.find_ancestor_of_type<MainWindow> (this)));
 
         note.picture = file.get_path ();
-        image.file = file.get_path ();
+        image.file = "file://"+note.picture;
         image_button.visible = false;
         image_remove_button.visible = true;
         note_header.add_css_class ("scrim");
@@ -340,7 +398,7 @@ public class Notejot.NoteContentView : He.Bin {
     [GtkCallback]
     public void action_picture_remove () {
         note.picture = "";
-        image.clear_image ();
+        image.file = "";
         image_button.visible = true;
         image_remove_button.visible = false;
         note_header.remove_css_class ("scrim");
@@ -724,13 +782,13 @@ public class Notejot.NoteContentView : He.Bin {
                         // measure the offset of the actual unicode glyphs,
                         // not the byte offset
                         measure_text = buf[0:match_start_offset];
-                        match_start_offset = measure_text.char_count();
+                        match_start_offset = measure_text.char_count ();
                         measure_text = buf[0:match_end_offset];
-                        match_end_offset = measure_text.char_count();
+                        match_end_offset = measure_text.char_count ();
 
-                        Format format = string_to_format(match.fetch_named("wrap"));
+                        Format format = string_to_format (match.fetch_named("wrap"));
 
-                        format_blocks += FormatBlock() {
+                        format_blocks += FormatBlock () {
                             start = match_start_offset,
                             end = match_end_offset,
                             format = format
